@@ -5,6 +5,7 @@ import _max from 'lodash/max';
 import { Wrapper } from './styled';
 import { DataSetConfigItem, KeyedObj, LineChartData } from '../../../model/types';
 import { colors } from '../../../utils/theme';
+import { COUNT_OF_CHARTS, OFFSET_OF_BOTH_SIDE, ONE_HUNDRED_PERCENT, PERCENTAGE_RATIO } from '../../../utils/common';
 
 export const COMMON_AXES_TICK_PROPS = { fill: colors.scooter, fontSize: 10, fontWeight: 'bold' };
 
@@ -77,7 +78,10 @@ const CustomLineChart = <T extends KeyedObj>(props: Props<T>) => {
 
   const renderIndicatorLine = useMemo(() => {
     const maxOfElement = _max(data.map(d => d[dataKey]))
-    const widthOfLine = maxOfElement * 2.875 / 100;
+
+    //dynamic calculation of the indicator line width
+    const widthOfLine = maxOfElement * PERCENTAGE_RATIO / ONE_HUNDRED_PERCENT;
+
     return [
       <ReferenceArea x1={-widthOfLine * 3} x2={-widthOfLine * 2} y1={0} y2={10} alwaysShow fill={colors.laPalma} />,
       <ReferenceArea x1={-widthOfLine * 3} x2={-widthOfLine * 2} y1={10} y2={20} alwaysShow fill={colors.sunflower} />,
@@ -87,7 +91,7 @@ const CustomLineChart = <T extends KeyedObj>(props: Props<T>) => {
 
   return (
     <Wrapper isYAxisVisible={isYAxisVisible}>
-      <LineChart {...COMMON_LINE_CHART_PROPS} data={data} width={(width - 60) / 4} height={600}>
+      <LineChart {...COMMON_LINE_CHART_PROPS} data={data} width={(width - OFFSET_OF_BOTH_SIDE) / COUNT_OF_CHARTS} height={600}>
         <CartesianGrid vertical={false} stroke={colors.scooter} opacity={0.25} />
         <XAxis type="number" {...COMMON_X_AXIS_PROPS} tickCount={3} />
         <YAxis dataKey="depth" {...COMMON_Y_AXIS_PROPS} domain={[0, data[data.length - 1].depth]} ticks={renderTicks()} />
