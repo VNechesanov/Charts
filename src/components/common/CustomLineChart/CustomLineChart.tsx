@@ -37,11 +37,12 @@ type Props<T extends KeyedObj> = {
   data: ReadonlyArray<LineChartData<T>>;
   config: DataSetConfigItem[];
   isYAxisVisible?: boolean;
+  width: number;
 };
 
 const CustomLineChart = <T extends KeyedObj>(props: Props<T>) => {
-  const { data, config, isYAxisVisible = true } = props;
-  const [dataKey, setDataKey] = useState('');
+  const { data, config, isYAxisVisible = true, width } = props;
+  const [dataKey, setDataKey] = useState('')
 
   const renderLine = useCallback((c: DataSetConfigItem, keyPrefix: string = '') => {
     const { color = colors.black, dataKey, name } = c;
@@ -78,15 +79,15 @@ const CustomLineChart = <T extends KeyedObj>(props: Props<T>) => {
     const maxOfElement = _max(data.map(d => d[dataKey]))
     const widthOfLine = maxOfElement * 2.875 / 100;
     return [
-      <ReferenceArea x1={-widthOfLine * 5} x2={-widthOfLine * 3} y1={0} y2={10} alwaysShow fill={colors.laPalma} />,
-      <ReferenceArea x1={-widthOfLine * 5} x2={-widthOfLine * 3} y1={10} y2={20} alwaysShow fill={colors.sunflower} />,
-      <ReferenceArea x1={-widthOfLine * 5} x2={-widthOfLine * 3} y1={20} y2={91.5} alwaysShow fill={colors.jaffa} />
+      <ReferenceArea x1={-widthOfLine * 3} x2={-widthOfLine * 2} y1={0} y2={10} alwaysShow fill={colors.laPalma} />,
+      <ReferenceArea x1={-widthOfLine * 3} x2={-widthOfLine * 2} y1={10} y2={20} alwaysShow fill={colors.sunflower} />,
+      <ReferenceArea x1={-widthOfLine * 3} x2={-widthOfLine * 2} y1={20} y2={91.5} alwaysShow fill={colors.jaffa} />
     ]
   }, [data, dataKey]);
 
   return (
     <Wrapper isYAxisVisible={isYAxisVisible}>
-      <LineChart {...COMMON_LINE_CHART_PROPS} data={data} width={300} height={600}>
+      <LineChart {...COMMON_LINE_CHART_PROPS} data={data} width={(width - 60) / 4} height={600}>
         <CartesianGrid vertical={false} stroke={colors.scooter} opacity={0.25} />
         <XAxis type="number" {...COMMON_X_AXIS_PROPS} tickCount={3} />
         <YAxis dataKey="depth" {...COMMON_Y_AXIS_PROPS} domain={[0, data[data.length - 1].depth]} ticks={renderTicks()} />

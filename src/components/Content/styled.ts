@@ -10,6 +10,7 @@ export const Wrapper = styled.div`
   margin: ${px(30)};
   background-color: ${colors.blackHaze};
   border-radius: ${px(5)};
+  padding: ${px(20)};
 `;
 
 export const ElementWrapper = styled.div`
@@ -18,4 +19,5 @@ export const ElementWrapper = styled.div`
   color: ${colors.scooter};
   align-items: center;
   margin-top: ${px(15)};
+  width: 25%;
 `;
