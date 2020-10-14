@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { alConfig, cuConfig, feConfig, mnConfig, mockData } from '../../utils';
 import CustomLineChart from '../common/CustomLineChart/CustomLineChart';
@@ -11,27 +11,34 @@ const Content = () => {
     setWidth(window.innerWidth);
   }
 
+  useEffect(() => {
+    window.addEventListener('resize', updateSize);
+
+    return function cleanup() {
+      window.removeEventListener('resize', updateSize)
+    }
+  }, [])
+
   return (
     <>
       <Wrapper>
         <ElementWrapper>
           Fe
-      <CustomLineChart config={feConfig} data={mockData} width={width} />
+          <CustomLineChart config={feConfig} data={mockData} width={width} />
         </ElementWrapper>
         <ElementWrapper>
           Al
-      <CustomLineChart config={alConfig} data={mockData} isYAxisVisible={false} width={width} />
+          <CustomLineChart config={alConfig} data={mockData} isYAxisVisible={false} width={width} />
         </ElementWrapper>
         <ElementWrapper>
           Mn
-      <CustomLineChart config={mnConfig} data={mockData} isYAxisVisible={false} width={width} />
+          <CustomLineChart config={mnConfig} data={mockData} isYAxisVisible={false} width={width} />
         </ElementWrapper>
         <ElementWrapper>
           Cu
-      <CustomLineChart config={cuConfig} data={mockData} isYAxisVisible={false} width={width} />
+          <CustomLineChart config={cuConfig} data={mockData} isYAxisVisible={false} width={width} />
         </ElementWrapper>
       </Wrapper>
-      {window.addEventListener('resize', updateSize)}
     </>
   );
 }
